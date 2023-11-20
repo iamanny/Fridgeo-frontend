@@ -84,6 +84,9 @@ flutter:
    - family: Raleway
      fonts:
        - asset: fonts/Raleway-Medium.ttf
+   - family: Inter
+     fonts:
+       - asset: fonts/Inter-Bold.ttf
   #     - asset: fonts/TrajanPro_Bold.ttf
  #        weight: 700
 
