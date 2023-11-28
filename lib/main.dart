@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:project/pages/list_of_products.dart';
+import 'package:project/pages/incorrect_login.dart';
 import 'package:project/pages/name_registration.dart';
 import 'package:project/pages/start_of_registration.dart';
 import 'package:project/pages/login_to_account.dart';
-import 'package:project/pages/start_page.dart';
-import 'package:project/pages/list_of_products.dart';
 
-//test
 void main() => runApp(MaterialApp(
-
-  initialRoute: '/',
+  initialRoute: '/loginToAccount',
   routes: {
-    '/': (context) => startPage(),
+    '/listOfProducts': (context) => listOfProducts(),
     '/loginToAccount': (context) => loginToAccount(),
     '/startOfRegistration': (context) => startOfRegistration(),
-    '/nameOfRegistration' : (context) => nameOfRegistration(),
-    '/listOfProducts' : (context) => listOfProducts(),
-
+    '/incorrectLogin': (context) => incorrectLogin(),
+    '/nameRegistration': (context) => nameRegistration(),
   },
 ));
+
+
 
 
