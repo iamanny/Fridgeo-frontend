@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project/pages/list_of_products.dart';
-import 'package:project/pages/incorrect_login.dart';
-import 'package:project/pages/name_registration.dart';
-import 'package:project/pages/start_of_registration.dart';
-import 'package:project/pages/login_to_account.dart';
+import 'package:untitled/pages/incorrect_login.dart';
+import 'package:untitled/pages/list_of_products.dart';
+import 'package:untitled/pages/login_to_account.dart';
+import 'package:untitled/pages/name_registration.dart';
+import 'package:untitled/pages/start_of_registration.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/loginToAccount',
