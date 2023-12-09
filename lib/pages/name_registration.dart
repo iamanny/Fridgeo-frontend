@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'background.dart';
+import 'backgroundLR.dart';
 
 class nameRegistration extends StatefulWidget {
   const nameRegistration({super.key});
@@ -11,11 +11,13 @@ class nameRegistration extends StatefulWidget {
 }
 
 class _nameRegistrationState extends State<nameRegistration> {
+  var _value = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset : false,
-        body: MyBackgroundPage(
+        body: LogBackgroundPage(
             child: SafeArea(
               child: Center(
                 child: Column(
@@ -105,7 +107,7 @@ class _nameRegistrationState extends State<nameRegistration> {
                                 fontSize: 16,
                                 fontFamily: 'Raleway',
                                 fontWeight: FontWeight.w500,
-                                height: 0.08,
+                                // height: 0.08,
                               ),
                               border: InputBorder.none,
 
@@ -136,7 +138,7 @@ class _nameRegistrationState extends State<nameRegistration> {
                                 fontSize: 16,
                                 fontFamily: 'Raleway',
                                 fontWeight: FontWeight.w500,
-                                height: 0.08,
+                                // height: 0.08,
                               ),
                               border: InputBorder.none,
 
@@ -147,6 +149,7 @@ class _nameRegistrationState extends State<nameRegistration> {
 
                     ),
                     Padding(padding: EdgeInsetsDirectional.only(top: 33.0)),
+
                     Row(
                       children: [
                         Padding(padding: EdgeInsetsDirectional.only(start: 47.0)),
@@ -157,21 +160,20 @@ class _nameRegistrationState extends State<nameRegistration> {
                             fontSize: 16,
                             fontFamily: 'Raleway',
                             fontWeight: FontWeight.w500,
-                            height: 0.08,
+                            // height: 0.08,
                           ),
                         ),
                         Padding(padding: EdgeInsetsDirectional.only(start: 64.0)),
-                        // Container(
-                        //   width: 16,
-                        //   height: 16,
-                        //   decoration: ShapeDecoration(
-                        //     color: Color(0xFFE2DFDF),
-                        //     shape: OvalBorder(
-                        //       side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
-                        //     ),
-                        //   ),
-                        // ),
-                        Padding(padding: EdgeInsetsDirectional.only(start: 4.0)),
+                        CustomRadio(
+                          value: 1,
+                          groupValue: _value,
+                          onChanged: (int? value){
+                            setState(() {
+                              _value = value!;
+                            });
+                          },
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 4)),
                         Text(
                           'Мужской',
                           style: TextStyle(
@@ -179,21 +181,21 @@ class _nameRegistrationState extends State<nameRegistration> {
                             fontSize: 16,
                             fontFamily: 'Raleway',
                             fontWeight: FontWeight.w500,
-                            height: 0.08,
+                            // height: 0.08,
                           ),
                         ),
                         Padding(padding: EdgeInsetsDirectional.only(start: 42.0)),
-                        // Container(
-                        //   width: 16,
-                        //   height: 16,
-                        //   decoration: ShapeDecoration(
-                        //     color: Color(0xFFE2DFDF),
-                        //     shape: OvalBorder(
-                        //       side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
-                        //     ),
-                        //   ),
-                        // ),
-                        Padding(padding: EdgeInsetsDirectional.only(start: 4.0)),
+                        CustomRadio(
+                          value: 2,
+                          groupValue: _value,
+
+                          onChanged: (int? value){
+                            setState(() {
+                              _value = value!;
+                            });
+                          },
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 4)),
                         Text(
                           'Женский',
                           style: TextStyle(
@@ -201,21 +203,20 @@ class _nameRegistrationState extends State<nameRegistration> {
                             fontSize: 16,
                             fontFamily: 'Raleway',
                             fontWeight: FontWeight.w500,
-                            height: 0.08,
+                            // height: 0.08,
                           ),
                         ),
-
                       ],
                     ),
                     Padding(padding: EdgeInsetsDirectional.only(top: 59.0)),
                     Container(
                       child: ElevatedButton(
                         onPressed: () {
-
-
-                          // Navigator.pushNamed(context, '/');
+                          Navigator.pushNamed(context, '/listOfProducts');
                         },
                         style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            shadowColor: Colors.transparent,
                             backgroundColor: Color(0xFF333333),
                             fixedSize: Size(230, 47),
                             shape: RoundedRectangleBorder(
@@ -259,6 +260,7 @@ class _nameRegistrationState extends State<nameRegistration> {
 
                           },
 
+
                           child: Text(
                             'Войти',
                             style: TextStyle(
@@ -274,6 +276,7 @@ class _nameRegistrationState extends State<nameRegistration> {
                             padding: EdgeInsetsDirectional.all(0.0),
                             foregroundColor: Colors.white,
                             minimumSize: Size.zero,
+                            shadowColor: Colors.transparent,
                           ),
                           onHover: null,
                         ),
@@ -294,6 +297,63 @@ class _nameRegistrationState extends State<nameRegistration> {
 
   }
 }
+class CustomRadio extends StatefulWidget {
+  int value;
+  int groupValue;
+  Color? color;
+  Color? selectColor;
+  void Function(int?)? onChanged;
+  CustomRadio({
+    Key ? key,
+    required this.value,
+    required this.groupValue,
+    this.color = const Color(0xFFE2DFDF),
+    this.selectColor = const Color(0xFF54DD01),
+    this.onChanged,
 
+    }) : super(key: key);
 
+  @override
+  State<CustomRadio> createState() => _CustomRadioState();
+}
 
+class _CustomRadioState extends State<CustomRadio> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        bool selected = widget.value != widget.groupValue;
+        if (selected) {
+          //set widget.value in param
+          widget.onChanged!(widget.value);
+        }
+      },
+      child: Container(
+        height: 16,
+        width: 16,
+        padding: EdgeInsets.zero,
+        decoration: ShapeDecoration(
+
+          color: Color(0xFFE2DFDF),
+          shape: OvalBorder(
+            side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
+          ),
+        ),
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.zero,
+            height: 10,
+            width: 10,
+            decoration: BoxDecoration(
+              color: widget.value == widget.groupValue
+                  ? widget.selectColor   // Цвет маленькой окружности при активном состоянии
+                  : widget.color, // Цвет маленькой окружности при неактивном состоянии
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+
+    );
+  }
+}

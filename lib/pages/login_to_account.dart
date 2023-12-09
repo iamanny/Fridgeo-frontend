@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'background.dart';
+import 'backgroundLR.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class loginToAccount extends StatefulWidget {
   const loginToAccount({super.key});
@@ -9,11 +11,12 @@ class loginToAccount extends StatefulWidget {
 }
 
 class _loginToAccountState extends State<loginToAccount> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset : false,
-        body: MyBackgroundPage(
+        body: LogBackgroundPage(
           child: SafeArea(
             child: Center(
               child: Column(
@@ -52,24 +55,25 @@ class _loginToAccountState extends State<loginToAccount> {
                   ),
                   Padding(padding: EdgeInsetsDirectional.only(top: 40.0)),
 
-
-
                   Container(
                     width: 343,
-                    height: 56,
-                    padding: const EdgeInsetsDirectional.fromSTEB(20, 18, 16, 18),
+                    height: 56, //56
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                     clipBehavior: Clip.antiAlias,
                     decoration: ShapeDecoration(
                       color: Color(0xFFEEEEEE),
+
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.50),
                       ),
                     ),
 
-                    child: new TextFormField(
+                    child: TextFormField(
+
                       keyboardType: TextInputType.emailAddress,
-                      decoration: new InputDecoration(hintText:
-                      'Логин',
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        hintText: 'Логин',
                         hintStyle: TextStyle(
                           color: Color(0xFF8D8D8D),
                           fontSize: 16,
@@ -78,20 +82,20 @@ class _loginToAccountState extends State<loginToAccount> {
                           height: 0.08,
                         ),
                         border: InputBorder.none,
-
                       ),
+                      onChanged: (value) {
 
+                      },
                     ),
+
                   ),
 
                   Padding(padding: EdgeInsetsDirectional.only(top: 15.0)),
-                  PasswordField(),
+                  PasswordField(text: 'Пароль'),
 
                   Padding(padding: EdgeInsetsDirectional.only(top: 15.0)),
 
                   Row(
-
-
                     children: [
                       SizedBox(width: 250),
                       Text(
@@ -105,20 +109,22 @@ class _loginToAccountState extends State<loginToAccount> {
                         ),),
                     ],
                   ),
+
                   SizedBox(height: 21),
                   Container(
                     child: ElevatedButton(
                       onPressed: () {
-                        SampleAppPage();
-
-                        // Navigator.pushNamed(context, '/incorrectLogin');
+                        Navigator.pushNamed(context, '/listOfProducts');
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF333333),
-                          fixedSize: Size(200, 47),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.5),
-                          )
+                        elevation: 0.0,
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Color(0xFF333333),
+                        fixedSize: Size(200, 47),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.5),
+                        ),
+
 
                       ),
 
@@ -177,6 +183,7 @@ class _loginToAccountState extends State<loginToAccount> {
                         ),
                         onHover: null,
                       ),
+
                     ],
                   )
 
@@ -192,8 +199,8 @@ class _loginToAccountState extends State<loginToAccount> {
 }
 
 class PasswordField extends StatefulWidget {
-  // final String text;
-  const PasswordField({Key? key, /**required this.text*/}) : super(key: key);
+  final String text;
+  const PasswordField({Key? key, required this.text}) : super(key: key);
 
   @override
   _PasswordFieldState createState() => _PasswordFieldState();
@@ -201,15 +208,13 @@ class PasswordField extends StatefulWidget {
 
 class _PasswordFieldState extends State<PasswordField> {
   final textFieldFocusNode = FocusNode();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
   bool _obscured = true;
 
-  void _toggleObscured() {
-    setState(() {
-      _obscured = !_obscured;
-      if (textFieldFocusNode.hasPrimaryFocus) return; // If focus is on text field, dont unfocus
-      textFieldFocusNode.canRequestFocus = false;     // Prevents focus if tap on eye
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,99 +238,57 @@ class _PasswordFieldState extends State<PasswordField> {
         keyboardType: TextInputType.visiblePassword,
         obscureText: _obscured,
         focusNode: textFieldFocusNode,
+        controller: passwordController,
         decoration: InputDecoration(
 
           floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
-          hintText: "Пароль",
+          hintText: widget.text, // Используйте значение параметра text
           hintStyle: TextStyle(
             color: Color(0xFF8D8D8D),
             fontSize: 16,
             fontFamily: 'Raleway',
             fontWeight: FontWeight.w500,
-            height: 0.08,
           ),
           border: InputBorder.none,
+          suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
 
-          suffixIcon: Padding(
-            padding: const EdgeInsetsDirectional.only(end: 0),
-            child: GestureDetector(
-              onTap: _toggleObscured,
-              child: Icon(
-                _obscured
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                size: 22,
-                color: Color(0xFF8D8D8D),
+          suffixIcon: SizedBox(
+              width: 24,
+              height: 24,
+              child: IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+
+
+                onPressed: () {
+
+                  setState(() {
+                    _obscured = !_obscured;
+                    if (textFieldFocusNode.hasPrimaryFocus) return; // If focus is on text field, dont unfocus
+                    textFieldFocusNode.canRequestFocus = false;     // Prevents focus if tap on eye
+                  });
+                },
+                icon: _obscured
+                ? SvgPicture.asset('assets/icons/Eye_open.svg')
+                : SvgPicture.asset('assets/icons/Eye_closed.svg'),
+
+                  iconSize: 24,
+                  color: Color(0xFF8D8D8D),
+
+                style: IconButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsetsDirectional.all(0.0),
               ),
-            ),
+
+          ),
           ),
         ),
+
       ),
     );
   }
 }
 
 
-class SampleApp extends StatelessWidget {
-  const SampleApp({super.key});
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sample App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const SampleAppPage(),
-    );
-  }
-}
 
-class SampleAppPage extends StatefulWidget {
-  const SampleAppPage({super.key});
 
-  @override
-  State<SampleAppPage> createState() => _SampleAppPageState();
-}
 
-class _SampleAppPageState extends State<SampleAppPage> {
-  String? _errorText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: Center(
-        child: TextField(
-          onSubmitted: (text) {
-            setState(() {
-              if (!isEmail(text)) {
-                _errorText = 'Error: This is not an email';
-              } else {
-                _errorText = null;
-              }
-            });
-          },
-          decoration: InputDecoration(
-            hintText: 'This is a hint',
-            errorText: _getErrorText(),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String? _getErrorText() {
-    return _errorText;
-  }
-
-  bool isEmail(String em) {
-    String emailRegexp =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|'
-        r'(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|'
-        r'(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-
-    RegExp regExp = RegExp(emailRegexp);
-
-    return regExp.hasMatch(em);
-  }}
