@@ -221,7 +221,9 @@ class _listOfProducts extends State<listOfProducts> {
                           return Container(
                             width: 391,
                             height: 350.10,
+
                             decoration: BoxDecoration(
+
                               color: Colors.white,
 
                               boxShadow: [
@@ -240,6 +242,15 @@ class _listOfProducts extends State<listOfProducts> {
                             ),
                             child: Column(
                               children: [
+                                Padding(padding: EdgeInsetsDirectional.only(top: 10)),
+
+
+                                SvgPicture.asset(
+
+                                    'assets/icons/Line 6.svg',
+                                  ),
+
+
                                 Padding(padding: EdgeInsetsDirectional.only(top: 26.1)),
 
                                 Container(
@@ -366,43 +377,6 @@ class _listOfProducts extends State<listOfProducts> {
 
                                     ],
                                   ),
-                                  // new TextFormField(
-                                  //   keyboardType: TextInputType.visiblePassword,
-                                  //
-                                  //   decoration: InputDecoration(
-                                  //     floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
-                                  //     hintText: 'Годен до:', // Используйте значение параметра text
-                                  //     hintStyle: TextStyle(
-                                  //       color: Color(0xFF8D8D8D),
-                                  //       fontSize: 16,
-                                  //       fontFamily: 'Raleway',
-                                  //       fontWeight: FontWeight.w500,
-                                  //       // height: 0.08,
-                                  //     ),
-                                  //     border: InputBorder.none,
-                                  //     suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
-                                  //
-                                  //     suffixIcon: SizedBox(
-                                  //       width: 24,
-                                  //       height: 24,
-                                  //       child: IconButton(
-                                  //         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                                  //
-                                  //         onPressed: () {
-                                  //         },
-                                  //         icon: SvgPicture.asset('assets/icons/Vector.svg'),
-                                  //         iconSize: 24,
-                                  //         color: Color(0xFF8D8D8D),
-                                  //         style: IconButton.styleFrom(
-                                  //           minimumSize: Size.zero,
-                                  //           padding: EdgeInsetsDirectional.all(0.0),
-                                  //
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  //
-                                  // ),
                                 ),
                                 Padding(padding: EdgeInsetsDirectional.only(top: 5)),
 
@@ -451,22 +425,6 @@ class _listOfProducts extends State<listOfProducts> {
                                       height: 0,
                                     ),
                                   ),
-
-
-                                  // new TextFormField(
-                                  //   keyboardType: TextInputType.visiblePassword,
-                                  //   decoration: InputDecoration(
-                                  //     floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
-                                  //     hintText: 'Годен в течение:', // Используйте значение параметра text
-                                  //     hintStyle: TextStyle(
-                                  //       color: Color(0xFF8D8D8D),
-                                  //       fontSize: 16,
-                                  //       fontFamily: 'Raleway',
-                                  //       fontWeight: FontWeight.w500,
-                                  //       // height: 0.08,
-                                  //     ),
-                                  //     border: InputBorder.none,
-                                  //   ),
                                       ],
                                   ),
 
@@ -486,7 +444,7 @@ class _listOfProducts extends State<listOfProducts> {
                                         height: 0,
                                       ),
                                     ),
-                                    Padding(padding: EdgeInsetsDirectional.only(start: 20.0)),
+                                    Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
 
                                     Count(),
                                   ],
@@ -647,9 +605,7 @@ class _CountState extends State<Count> {
   @override
   Widget build(BuildContext context) {
     return Row(
-
         children: [
-
           IconButton(
 
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -660,24 +616,14 @@ class _CountState extends State<Count> {
             style: IconButton.styleFrom(
               minimumSize: Size.zero,
               padding: EdgeInsetsDirectional.all(0.0),
-              ),
-          ),
-
-          Padding(padding: EdgeInsetsDirectional.only(start: 3)),
-          Container(
-            width: 16,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  width: 0.5,
-                  strokeAlign: BorderSide.strokeAlignCenter,
-                  color: Color(0xFF505050),
-                ),
-              ),
             ),
           ),
+          //Padding(padding: EdgeInsetsDirectional.only(start: 3)),
 
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
 
+            children: [
               Container(
 
                 child: Text(
@@ -687,14 +633,27 @@ class _CountState extends State<Count> {
                     fontSize: 14,
                     fontFamily: 'Quantico',
                     fontWeight: FontWeight.w400,
-
                   ),
                 ),
 
               ),
+              SizedBox(height: 1),
+              Container(
+                width: 16,
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 0.7,
+                      strokeAlign: BorderSide.strokeAlignCenter,
+                      color: Color(0xFF505050),
+                    ),
+                  ),
+                ),
+              ),
 
-          Padding(padding: EdgeInsetsDirectional.only(start: 3)),
-
+            ],
+          ),
+          //Padding(padding: EdgeInsetsDirectional.only(start: 3)),
 
           IconButton(
 
@@ -709,8 +668,6 @@ class _CountState extends State<Count> {
             ),
           ),
         ],
-
-
       );
   }
   void _decrease(){
