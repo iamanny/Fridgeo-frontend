@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'backgroundLR.dart';
 
 class startOfRegistration extends StatefulWidget {
@@ -12,9 +13,7 @@ class _startOfRegistrationState extends State<startOfRegistration> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FirstPageOfRegistration(),
-    );
+    return FirstPageOfRegistration();
   }
 }
 
@@ -24,12 +23,14 @@ class PasswordField extends StatefulWidget {
   final String text;
   final TextEditingController controller;
   final FocusNode focusNode;
+  final bool isInvalid;
 
   const PasswordField({
     Key? key,
     required this.text,
     required this.controller,
     required this.focusNode,
+    this.isInvalid = false,
   }) : super(key: key);
 
   @override
@@ -47,13 +48,13 @@ class _PasswordFieldState extends State<PasswordField> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
-        color: Color(0xFFEEEEEE),
+        color: widget.isInvalid ? Color(0x33D43D3D) : Color(0xFFEEEEEE),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.50),
         ),
       ),
       child: new TextFormField(
-        keyboardType: TextInputType.visiblePassword,
+        keyboardType: TextInputType.multiline,
         obscureText: _obscured,
         focusNode: widget.focusNode,
         controller: widget.controller,
@@ -78,13 +79,13 @@ class _PasswordFieldState extends State<PasswordField> {
                   _obscured = !_obscured;
                 });
               },
-              icon: Icon(
-                _obscured
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                size: 24,
-                color: Color(0xFF8D8D8D),
-              ),
+              icon: _obscured
+                  ? (widget.isInvalid ? SvgPicture.asset('assets/icons/Eye_open_red.svg') : SvgPicture.asset('assets/icons/Eye_open.svg'))
+                  : (widget.isInvalid ? SvgPicture.asset('assets/icons/Eye_closed_red.svg') : SvgPicture.asset('assets/icons/Eye_closed.svg')),
+
+              iconSize: 24,
+              color: Color(0xFF8D8D8D),
+
               style: IconButton.styleFrom(
                 minimumSize: Size.zero,
                 padding: EdgeInsetsDirectional.all(0.0),
@@ -102,9 +103,7 @@ class _PasswordFieldState extends State<PasswordField> {
 
 
 bool isValidLogin(String login) {
-  // Реализуйте свою логику проверки логина
-  // Возвращайте true, если логин корректен, и false в противном случае
-  // return login.isNotEmpty && login.contains('@'); // Пример проверки на наличие символа '@'
+  
   String emailRegexp =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|'
       r'(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|'
@@ -136,7 +135,6 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
   final FocusNode _confirmPasswordFocusNode = FocusNode();
   bool _passwordsMatch = true;
 
-
   @override
   void initState() {
     super.initState();
@@ -149,11 +147,22 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
       }
     });
 
-    _confirmPasswordController.addListener(() {
-      setState(() {
-        _passwordsMatch = _passwordController.text == _confirmPasswordController.text;
-      });
+    _passwordFocusNode.addListener(() {
+      if (_passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty) {
+        setState(() {
+          _passwordsMatch = _passwordController.text == _confirmPasswordController.text;
+        });
+      }
     });
+
+    _confirmPasswordFocusNode.addListener(() {
+      if (_passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty) {
+        setState(() {
+          _passwordsMatch = _passwordController.text == _confirmPasswordController.text;
+        });
+      }
+    });
+
 
   }
 
@@ -253,7 +262,7 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
                           child: new TextFormField(
                             controller: _emailController,
                             focusNode: _emailFocusNode,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
                               floatingLabelBehavior: FloatingLabelBehavior.never,
                               hintText: 'Логин',
@@ -325,6 +334,7 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
                       text: 'Повторите пароль',
                       controller: _confirmPasswordController,
                       focusNode: _confirmPasswordFocusNode,
+                      isInvalid: !_passwordsMatch,
                     ),
                     _passwordsMatch
                         ? Padding(padding: EdgeInsetsDirectional.only(top: 40.0))
@@ -364,12 +374,14 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
                     Container(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SecondPageOfRegistration(),
-                            ),
-                          );
+                          if (_passwordsMatch && isValidLogin(_emailController.text)) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SecondPageOfRegistration(),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                             elevation: 0.0,
@@ -446,19 +458,6 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
         )
     );
   }
-
-  bool isEmail(String em) {
-    String emailRegexp =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|'
-        r'(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|'
-        r'(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-
-    RegExp regExp = RegExp(emailRegexp);
-
-    return regExp.hasMatch(em);
-  }
-
-
 }
 
 
@@ -471,6 +470,8 @@ class SecondPageOfRegistration extends StatefulWidget {
 
 class _SecondPageOfRegistrationState extends State<SecondPageOfRegistration> {
   var _value = 'man';
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -546,66 +547,9 @@ class _SecondPageOfRegistrationState extends State<SecondPageOfRegistration> {
                       ),
                     ),
                     Padding(padding: EdgeInsetsDirectional.only(top: 29.0)),
-                    Container(
-                      width: 343,
-                      height: 56,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                      clipBehavior: Clip.antiAlias,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFEEEEEE),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.50),
-                        ),
-                      ),
-                      child: new TextFormField(
-                        decoration: new InputDecoration(hintText:
-                        'Имя',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF8D8D8D),
-                            fontSize: 16,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w500,
-                            // height: 0.08,
-                          ),
-                          border: InputBorder.none,
-
-                        ),
-
-                      ),
-
-
-                    ),
+                    NameInputField(text: 'Имя', controller: _nameController),
                     Padding(padding: EdgeInsetsDirectional.only(top: 15.0)),
-                    Container(
-                      width: 343,
-                      height: 56,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                      clipBehavior: Clip.antiAlias,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFEEEEEE),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.50),
-                        ),
-                      ),
-                      child: new TextFormField(
-
-                        decoration: new InputDecoration(hintText:
-                        'Фамилия',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF8D8D8D),
-                            fontSize: 16,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w500,
-                            // height: 0.08,
-                          ),
-                          border: InputBorder.none,
-
-                        ),
-
-                      ),
-
-
-                    ),
+                    NameInputField(text: 'Фамилия', controller: _surnameController),
                     Padding(padding: EdgeInsetsDirectional.only(top: 33.0)),
 
                     Row(
@@ -812,6 +756,58 @@ class _CustomRadioState extends State<CustomRadio> {
     );
   }
 }
+
+class NameInputField extends StatefulWidget {
+  final String text;
+  final TextEditingController controller;
+
+  const NameInputField({
+    Key? key,
+    required this.text,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  State<NameInputField> createState() => _NameInputFieldState();
+}
+
+class _NameInputFieldState extends State<NameInputField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 343,
+      height: 56,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: Color(0xFFEEEEEE),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.50),
+        ),
+      ),
+      child: new TextFormField(
+        keyboardType: TextInputType.multiline,
+        controller: widget.controller,
+        decoration:
+        new InputDecoration(hintText: widget.text,
+          hintStyle: TextStyle(
+            color: Color(0xFF8D8D8D),
+            fontSize: 16,
+            fontFamily: 'Raleway',
+            fontWeight: FontWeight.w500,
+            // height: 0.08,
+          ),
+          border: InputBorder.none,
+
+        ),
+
+      ),
+
+
+    );
+  }
+}
+
 
 
 
