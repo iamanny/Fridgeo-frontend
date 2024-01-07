@@ -11,7 +11,7 @@ class nameRegistration extends StatefulWidget {
 }
 
 class _nameRegistrationState extends State<nameRegistration> {
-  var _value = -1;
+  var _value = 'man';
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +165,9 @@ class _nameRegistrationState extends State<nameRegistration> {
                         ),
                         Padding(padding: EdgeInsetsDirectional.only(start: 64.0)),
                         CustomRadio(
-                          value: 1,
+                          value: 'man',
                           groupValue: _value,
-                          onChanged: (int? value){
+                          onChanged: (String? value) {
                             setState(() {
                               _value = value!;
                             });
@@ -186,10 +186,9 @@ class _nameRegistrationState extends State<nameRegistration> {
                         ),
                         Padding(padding: EdgeInsetsDirectional.only(start: 42.0)),
                         CustomRadio(
-                          value: 2,
+                          value: 'woman',
                           groupValue: _value,
-
-                          onChanged: (int? value){
+                          onChanged: (String? value) {
                             setState(() {
                               _value = value!;
                             });
@@ -298,20 +297,19 @@ class _nameRegistrationState extends State<nameRegistration> {
   }
 }
 class CustomRadio extends StatefulWidget {
-  int value;
-  int groupValue;
+  String value;
+  String groupValue;
   Color? color;
   Color? selectColor;
-  void Function(int?)? onChanged;
+  void Function(String?)? onChanged;
   CustomRadio({
-    Key ? key,
+    Key? key,
     required this.value,
     required this.groupValue,
     this.color = const Color(0xFFE2DFDF),
     this.selectColor = const Color(0xFF54DD01),
     this.onChanged,
-
-    }) : super(key: key);
+  }) : super(key: key);
 
   @override
   State<CustomRadio> createState() => _CustomRadioState();
@@ -321,11 +319,12 @@ class _CustomRadioState extends State<CustomRadio> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         bool selected = widget.value != widget.groupValue;
         if (selected) {
-          //set widget.value in param
           widget.onChanged!(widget.value);
+        } else {
+          widget.onChanged!(null); // добавляем эту строку
         }
       },
       child: Container(
@@ -333,7 +332,6 @@ class _CustomRadioState extends State<CustomRadio> {
         width: 16,
         padding: EdgeInsets.zero,
         decoration: ShapeDecoration(
-
           color: Color(0xFFE2DFDF),
           shape: OvalBorder(
             side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
@@ -346,14 +344,13 @@ class _CustomRadioState extends State<CustomRadio> {
             width: 10,
             decoration: BoxDecoration(
               color: widget.value == widget.groupValue
-                  ? widget.selectColor   // Цвет маленькой окружности при активном состоянии
-                  : widget.color, // Цвет маленькой окружности при неактивном состоянии
+                  ? widget.selectColor
+                  : widget.color,
               shape: BoxShape.circle,
             ),
           ),
         ),
       ),
-
     );
   }
 }
