@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,9 +16,9 @@ class listOfProducts extends StatefulWidget {
 
 class _listOfProducts extends State<listOfProducts> {
 
-  String selectedRadioTile = 'Option 1';
+  String UntilOrWithin = 'null';
+
   final TextEditingController _titleController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
 
@@ -271,7 +273,7 @@ class _listOfProducts extends State<listOfProducts> {
             builder: (BuildContext context, StateSetter setState) {
           return Container(
             width: double.infinity,
-            height: 350.10,
+            height: UntilOrWithin == 'validWithin' ? 436.0 : 350.10,
 
             decoration: BoxDecoration(
 
@@ -293,7 +295,7 @@ class _listOfProducts extends State<listOfProducts> {
             ),
             child: Column(
               children: [
-                Padding(padding: EdgeInsetsDirectional.only(top: 10)),
+                Padding(padding: EdgeInsetsDirectional.only(bottom: 5)),
 
 
                 SvgPicture.asset(
@@ -384,11 +386,11 @@ class _listOfProducts extends State<listOfProducts> {
 
                     children: [
                       CustomRadio(
-                        value: 'Option 1',
-                        groupValue: selectedRadioTile,
+                        value: 'validUntil',
+                        groupValue: UntilOrWithin,
                         onChanged: (value) {
                           setState(() {
-                            selectedRadioTile = value!;
+                            UntilOrWithin = value!;
                           });
                         },
                       ),
@@ -407,28 +409,29 @@ class _listOfProducts extends State<listOfProducts> {
                       Expanded(
                         child: SizedBox(),
                       ),
-                      Container(
-                        width: 100,
-                        child: TextFormField(
-                          inputFormatters: [
-                            MaskTextInputFormatter(mask: '##.##.##', filter: {
-                              "#": RegExp(r'[0-9]')
-                            }),
-                          ],
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'ДД.ММ.ГГ',
-                            hintStyle: TextStyle(
-                              color: Color(0xFF8D8D8D),
-                              fontSize: 16,
-                              fontFamily: 'Raleway',
-                              fontWeight: FontWeight.w500,
+                      if (UntilOrWithin == 'validUntil')
+                        Container(
+                          width: 100,
+                          child: TextFormField(
+                            inputFormatters: [
+                              MaskTextInputFormatter(mask: '##.##.##', filter: {
+                                "#": RegExp(r'[0-9]')
+                              }),
+                            ],
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'ДД.ММ.ГГ',
+                              hintStyle: TextStyle(
+                                color: Color(0xFF8D8D8D),
+                                fontSize: 16,
+                                fontFamily: 'Raleway',
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
+                            autofocus: false,
                           ),
-                          autofocus: false,
                         ),
-                      ),
 
 
                       SvgPicture.asset(
@@ -465,11 +468,11 @@ class _listOfProducts extends State<listOfProducts> {
 
 
                       CustomRadio(
-                        value: 'Option 2',
-                        groupValue: selectedRadioTile,
+                        value: 'validWithin',
+                        groupValue: UntilOrWithin,
                         onChanged: (value) {
                           setState(() {
-                            selectedRadioTile = value!;
+                            UntilOrWithin = value!;
                           });
                         },
                       ),
@@ -489,28 +492,37 @@ class _listOfProducts extends State<listOfProducts> {
                   ),
 
                 ),
-                Padding(padding: EdgeInsetsDirectional.only(top: 16.0)),
 
-                Row(
+
+                if (UntilOrWithin != 'validWithin')
+                Column(
                   children: [
-                    Padding(padding: EdgeInsetsDirectional.only(start: 96.0)),
-                    Text(
-                      'Количество:',
-                      style: TextStyle(
-                        color: Color(0xFF8D8D8D),
-                        fontSize: 16,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    ),
-                    Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
+                    Padding(padding: EdgeInsetsDirectional.only(top: 16.0)),
+                    Row(
+                      children: [
+                        Padding(padding: EdgeInsetsDirectional.only(start: 96.0)),
+                        Text(
+                          'Количество:',
+                          style: TextStyle(
+                            color: Color(0xFF8D8D8D),
+                            fontSize: 16,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                          ),
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
 
-                    Count(),
+                        Count(),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsetsDirectional.only(top: 41.0)),
                   ],
                 ),
-                Padding(padding: EdgeInsetsDirectional.only(top: 41.0)),
 
+
+                if (UntilOrWithin == 'validWithin')
+                  WindowWithin(),
 
                 Container(
 
@@ -548,6 +560,8 @@ class _listOfProducts extends State<listOfProducts> {
       },
     );
   }
+
+
 }
 
 
@@ -566,23 +580,28 @@ class _CountState extends State<Count> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-          onPressed: _decrease,
-          icon: SvgPicture.asset('assets/icons/Group 10414.svg'),
-          iconSize: 20,
-          color: Color(0xFF8D8D8D),
-          style: IconButton.styleFrom(
-            minimumSize: Size.zero,
-            padding: EdgeInsetsDirectional.all(0.0),
+        SizedBox(
+          height: 20,
+          width: 20,
+          child: InkWell(
+            onTap: () {
+              _decrease();
+            },
+            child: SvgPicture.asset(
+              'assets/icons/Group 10414.svg',
+              width: 24,
+              height: 24,
+            ),
           ),
         ),
-        //Padding(padding: EdgeInsetsDirectional.only(start: 3)),
+        Padding(padding: EdgeInsetsDirectional.only(start: 10)),
+
+
 
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
 
           children: [
             Container(
@@ -615,19 +634,23 @@ class _CountState extends State<Count> {
           ],
         ),
         //Padding(padding: EdgeInsetsDirectional.only(start: 3)),
+        Padding(padding: EdgeInsetsDirectional.only(start: 10)),
 
-        IconButton(
-
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-          onPressed: _increase,
-          icon: SvgPicture.asset('assets/icons/Group 10413.svg'),
-          iconSize: 20,
-          color: Color(0xFF8D8D8D),
-          style: IconButton.styleFrom(
-            minimumSize: Size.zero,
-            padding: EdgeInsetsDirectional.all(0.0),
+        SizedBox(
+          height: 20,
+          width: 20,
+          child: InkWell(
+            onTap: () {
+              _increase();
+            },
+            child: SvgPicture.asset(
+              'assets/icons/Group 10413.svg',
+              width: 24,
+              height: 24,
+            ),
           ),
         ),
+
       ],
     );
   }
@@ -710,3 +733,268 @@ class _CustomRadioState extends State<CustomRadio> {
     );
   }
 }
+
+class WindowWithin extends StatefulWidget {
+  const WindowWithin({super.key});
+
+  @override
+  State<WindowWithin> createState() => _WindowWithinState();
+}
+
+class _WindowWithinState extends State<WindowWithin> {
+  String DayMonthYear = 'null';
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 191,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(padding: EdgeInsetsDirectional.only(top: 5)),
+          Row(
+            children: [
+              Padding(padding: EdgeInsetsDirectional.only(start: 31)),
+              Container(
+                width: 150,
+                height: 136,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFEEEEEE),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.50),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Срок хранения:',
+                      style: TextStyle(
+                        color: Color(0xFF8D8D8D),
+                        fontSize: 16,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
+                    Padding(padding: EdgeInsetsDirectional.only(top: 9)),
+                    Count(),
+                    Padding(padding: EdgeInsetsDirectional.only(top: 9)),
+                    Column(
+                      children: [
+
+                        Row(
+                          children: [
+                            Padding(padding: EdgeInsetsDirectional.only(start: 29)),
+                            CustomRadio(
+                              value: 'day',
+                              groupValue: DayMonthYear,
+                              onChanged: (value) {
+                                setState(() {
+                                  DayMonthYear = value!;
+                                });
+                              },
+                            ),
+                            Padding(padding: EdgeInsetsDirectional.only(start: 16)),
+                            Text(
+                              'Суток',
+                              style: TextStyle(
+                                color: Color(0xFF505050),
+                                fontSize: 14,
+                                fontFamily: 'Raleway',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(top: 8)),
+                        Row(
+                          children: [
+                            Padding(padding: EdgeInsetsDirectional.only(start: 29)),
+                            CustomRadio(
+                              value: 'month',
+                              groupValue: DayMonthYear,
+                              onChanged: (value) {
+                                setState(() {
+                                  DayMonthYear = value!;
+                                });
+                              },
+                            ),
+                            Padding(padding: EdgeInsetsDirectional.only(start: 16)),
+                            Text(
+                              'Месяцев',
+                              style: TextStyle(
+                                color: Color(0xFF505050),
+                                fontSize: 14,
+                                fontFamily: 'Raleway',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(top: 8)),
+                        Row(
+                          children: [
+                            Padding(padding: EdgeInsetsDirectional.only(start: 29)),
+                            CustomRadio(
+                              value: 'year',
+                              groupValue: DayMonthYear,
+                              onChanged: (value) {
+                                setState(() {
+                                  DayMonthYear = value!;
+                                });
+                              },
+                            ),
+                            Padding(padding: EdgeInsetsDirectional.only(start: 16)),
+                            Text(
+                              'Лет',
+                              style: TextStyle(
+                                color: Color(0xFF505050),
+                                fontSize: 14,
+                                fontFamily: 'Raleway',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+
+              ),
+
+              Padding(padding: EdgeInsetsDirectional.only(start: 5)),
+              Column(
+                children: [
+                  Container(
+                    width: 175,
+                    height: 68,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFEEEEEE),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.50),
+                      ),
+                    ),
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Дата изготовления:',
+                          style: TextStyle(
+                            color: Color(0xFF8D8D8D),
+                            fontSize: 16,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                          ),
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(top: 7)),
+                        Row(
+                          children: [
+                            Padding(padding: EdgeInsetsDirectional.only(start: 27)),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                
+                                Container(
+                                  width: 70,
+                                  height: 14,
+                                  child: TextFormField(
+                                    inputFormatters: [
+                                      MaskTextInputFormatter(mask: '##.##.##', filter: {
+                                        "#": RegExp(r'[0-9]')
+                                      }),
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'ДД.ММ.ГГ',
+                                      hintStyle: TextStyle(
+                                        color: Color(0xFF8D8D8D),
+                                        fontSize: 14,
+                                        fontFamily: 'Raleway',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    autofocus: false,
+                                  ),
+                                ),
+                                Container(
+                                  width: 104.29,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 1,
+                                        strokeAlign: BorderSide.strokeAlignCenter,
+                                        color: Color(0xFF8D8D8D),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(padding: EdgeInsetsDirectional.only(start: 9)),
+                            SvgPicture.asset(
+                              'assets/icons/Calendar.svg',
+                              width: 20,
+                              height: 20,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+
+                  ),
+                  Padding(padding: EdgeInsetsDirectional.only(top: 5)),
+                  Container(
+                    width: 175,
+                    height: 64,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFEEEEEE),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.50),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        
+                        Text(
+                          'Количество:',
+                          style: TextStyle(
+                            color: Color(0xFF8D8D8D),
+                            fontSize: 16,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                          ),
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(top: 9)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                            Count(),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          Padding(padding: EdgeInsetsDirectional.only(top: 49)),
+        ],
+      ),
+    );
+  }
+}
+
