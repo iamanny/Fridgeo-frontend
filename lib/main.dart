@@ -14,7 +14,7 @@ void main() => runApp(MaterialApp(
 
 
 
-  initialRoute: '/loginToAccount',
+  initialRoute: '/listOfProducts',
   routes: {
     '/listOfProducts': (context) => listOfProducts(),
     '/loginToAccount': (context) => loginToAccount(),

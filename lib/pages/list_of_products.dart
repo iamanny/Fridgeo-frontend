@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:untitled/pages/background.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 
 class listOfProducts extends StatefulWidget {
@@ -12,7 +13,12 @@ class listOfProducts extends StatefulWidget {
 }
 
 class _listOfProducts extends State<listOfProducts> {
-  var _value = 1;
+
+  String selectedRadioTile = 'Option 1';
+  final TextEditingController _titleController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
 
 
   @override
@@ -204,288 +210,10 @@ class _listOfProducts extends State<listOfProducts> {
                       height: 52,
                       padding: EdgeInsets.zero,
 
+
                       child: ElevatedButton(
                         onPressed: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.white,
-                            barrierColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35),
-                                topRight: Radius.circular(35),
-                              ),
-                            ),
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) {
-                              return Container(
-                                width: 391,
-                                height: 350.10,
-
-                                decoration: BoxDecoration(
-
-                                  color: Colors.white,
-
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      spreadRadius: 10,
-                                      blurRadius: 55,
-                                      offset: Offset(0, 3),
-                                      // changes the position of the shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(35),
-                                    topRight: Radius.circular(35),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 10)),
-
-
-                                    SvgPicture.asset(
-
-                                      'assets/icons/Line 6.svg',
-                                    ),
-
-
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 26.1)),
-
-                                    Container(
-                                      width: 330,
-                                      height: 40,
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFFEEEEEE),
-
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12.50),
-                                        ),
-                                      ),
-
-                                      child:
-                                      new TextFormField(
-                                        keyboardType: TextInputType.visiblePassword,
-                                        decoration: InputDecoration(
-                                          floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
-                                          hintText: 'Название', // Используйте значение параметра text
-                                          hintStyle: TextStyle(
-                                            color: Color(0xFF8D8D8D),
-                                            fontSize: 16,
-                                            fontFamily: 'Raleway',
-                                            fontWeight: FontWeight.w500,
-                                            // height: 0.08,
-                                          ),
-                                          border: InputBorder.none,
-                                          suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
-
-                                          suffixIcon: SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: IconButton(
-                                              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-
-                                              onPressed: () {
-                                              },
-                                              icon: SvgPicture.asset('assets/icons/Barcode.svg'),
-                                              iconSize: 24,
-                                              color: Color(0xFF8D8D8D),
-                                              style: IconButton.styleFrom(
-                                                minimumSize: Size.zero,
-                                                padding: EdgeInsetsDirectional.all(0.0),
-
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 5)),
-
-                                    Container(
-                                      width: 330,
-                                      height: 40,
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFFEEEEEE),
-
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12.50),
-                                        ),
-                                      ),
-
-
-                                      child:
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-
-                                        children: [
-                                          Container(
-
-                                          ),
-                                          Padding(padding: EdgeInsetsDirectional.only(start: 0)),
-
-                                          CustomRadio(
-                                            value: 1,
-                                            groupValue: _value,
-
-                                            onChanged: (int? value){
-                                              setState(() {
-                                                _value = value!;
-                                              });
-                                            },
-                                          ),
-                                          Padding(padding: EdgeInsetsDirectional.only(start: 10.0)),
-
-                                          Text(
-                                            'Годен до:',
-                                            style: TextStyle(
-                                              color: Color(0xFF8D8D8D),
-                                              fontSize: 16,
-                                              fontFamily: 'Raleway',
-                                              fontWeight: FontWeight.w500,
-                                              height: 0,
-                                            ),
-                                          ),
-                                          Padding(padding: EdgeInsetsDirectional.only(start: 167.0)),
-
-
-                                          SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: IconButton(
-                                              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-
-                                              onPressed: () {
-                                              },
-                                              icon: SvgPicture.asset('assets/icons/Calendar.svg'),
-                                              iconSize: 24,
-                                              color: Color(0xFF8D8D8D),
-                                              style: IconButton.styleFrom(
-                                                minimumSize: Size.zero,
-                                                padding: EdgeInsetsDirectional.all(0.0),
-                                              ),
-                                            ),
-                                          ),
-                                          //border: InputBorder.none,
-                                          //suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
-
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 5)),
-
-                                    Container(
-                                      width: 330,
-                                      height: 40,
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFFEEEEEE),
-
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12.50),
-                                        ),
-                                      ),
-
-                                      child:
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-
-                                        children: [
-                                          Container(
-
-                                          ),
-                                          Padding(padding: EdgeInsetsDirectional.only(start: 0)),
-
-                                          CustomRadio(
-                                            value: 2,
-                                            groupValue: _value,
-
-                                            onChanged: (int? value){
-                                              setState(() {
-                                                _value = value!;
-                                              });
-                                            },
-                                          ),
-                                          Padding(padding: EdgeInsetsDirectional.only(start: 10.0)),
-
-                                          Text(
-                                            'Годен в течение:',
-                                            style: TextStyle(
-                                              color: Color(0xFF8D8D8D),
-                                              fontSize: 16,
-                                              fontFamily: 'Raleway',
-                                              fontWeight: FontWeight.w500,
-                                              height: 0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                    ),
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 16.0)),
-
-                                    Row(
-                                      children: [
-                                        Padding(padding: EdgeInsetsDirectional.only(start: 96.0)),
-                                        Text(
-                                          'Количество:',
-                                          style: TextStyle(
-                                            color: Color(0xFF8D8D8D),
-                                            fontSize: 16,
-                                            fontFamily: 'Raleway',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
-                                        Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
-
-                                        Count(),
-                                      ],
-                                    ),
-                                    Padding(padding: EdgeInsetsDirectional.only(top: 41.0)),
-
-
-                                    Container(
-
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          //Navigator.pushNamed(context, '/listOfProducts');
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          shadowColor: Colors.transparent,
-                                          backgroundColor: Color(0xFF333333),
-                                          fixedSize: Size(190, 44),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(12.5),
-                                          ),
-                                        ),
-
-                                        child: Text(
-                                          'Сохранить',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontFamily: 'Raleway',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                          _showModalBottomSheet();
 
                         }, //onPressed
                         style: ElevatedButton.styleFrom(
@@ -529,69 +257,311 @@ class _listOfProducts extends State<listOfProducts> {
         )
     );
   }
-}
 
 
-class CustomRadio extends StatefulWidget {
-  int value;
-  int groupValue;
-  Color? color;
-  Color? selectColor;
-  void Function(int?)? onChanged;
-  CustomRadio({
-    Key ? key,
-    required this.value,
-    required this.groupValue,
-    this.color = const Color(0xFFE2DFDF),
-    this.selectColor = const Color(0xFF54DD01),
-    this.onChanged,
 
-  }) : super(key: key);
 
-  @override
-  State<CustomRadio> createState() => _CustomRadioState();
-}
 
-class _CustomRadioState extends State<CustomRadio> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        bool selected = widget.value != widget.groupValue;
-        if (selected) {
-          //set widget.value in param
-          widget.onChanged!(widget.value);
-        }
-      },
-      child: Container(
-        height: 16,
-        width: 16,
-        padding: EdgeInsets.zero,
-        decoration: ShapeDecoration(
-
-          color: Color(0xFFE2DFDF),
-          shape: OvalBorder(
-            side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
-          ),
-        ),
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.zero,
-            height: 10,
-            width: 10,
-            decoration: BoxDecoration(
-              color: widget.value == widget.groupValue
-                  ? widget.selectColor   // Цвет маленькой окружности при активном состоянии
-                  : widget.color, // Цвет маленькой окружности при неактивном состоянии
-              shape: BoxShape.circle,
-            ),
-          ),
+  void _showModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      // backgroundColor: Colors.white,
+      // barrierColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
         ),
       ),
 
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            width: double.infinity,
+            height: 350.10,
+
+            decoration: BoxDecoration(
+
+              color: Colors.white,
+
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 10,
+                  blurRadius: 55,
+                  offset: Offset(0, 3),
+                  // changes the position of the shadow
+                ),
+              ],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35),
+                topRight: Radius.circular(35),
+              ),
+            ),
+            child: Column(
+              children: [
+                Padding(padding: EdgeInsetsDirectional.only(top: 10)),
+
+
+                SvgPicture.asset(
+
+                  'assets/icons/Line 6.svg',
+                ),
+
+
+                Padding(padding: EdgeInsetsDirectional.only(top: 26.1)),
+
+                Container(
+                  width: 330,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 17, vertical: 1),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFEEEEEE),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.50),
+                    ),
+                  ),
+
+                  child:
+                  new TextFormField(
+                    controller: _titleController,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      //Hides label on focus or if filled
+                      hintText: 'Название',
+                      // Используйте значение параметра text
+                      hintStyle: TextStyle(
+                        color: Color(0xFF8D8D8D),
+                        fontSize: 16,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w500,
+                        // height: 0.08,
+                      ),
+                      border: InputBorder.none,
+                      suffixIconConstraints: BoxConstraints(
+                          maxHeight: 20, maxWidth: 20),
+
+                      suffixIcon: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: IconButton(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+
+                          onPressed: () {},
+                          icon: SvgPicture.asset('assets/icons/Barcode.svg'),
+                          iconSize: 20,
+                          color: Color(0xFF8D8D8D),
+                          style: IconButton.styleFrom(
+                            minimumSize: Size.zero,
+                            padding: EdgeInsetsDirectional.all(0.0),
+
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                  ),
+                ),
+                Padding(padding: EdgeInsetsDirectional.only(top: 5)),
+
+                Container(
+                  width: 330,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 17, vertical: 1),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFEEEEEE),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.50),
+                    ),
+                  ),
+
+
+                  child:
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+                      CustomRadio(
+                        value: 'Option 1',
+                        groupValue: selectedRadioTile,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRadioTile = value!;
+                          });
+                        },
+                      ),
+                      Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
+
+                      Text(
+                        'Годен до:',
+                        style: TextStyle(
+                          color: Color(0xFF8D8D8D),
+                          fontSize: 16,
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(),
+                      ),
+                      Container(
+                        width: 100,
+                        child: TextFormField(
+                          inputFormatters: [
+                            MaskTextInputFormatter(mask: '##.##.##', filter: {
+                              "#": RegExp(r'[0-9]')
+                            }),
+                          ],
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'ДД.ММ.ГГ',
+                            hintStyle: TextStyle(
+                              color: Color(0xFF8D8D8D),
+                              fontSize: 16,
+                              fontFamily: 'Raleway',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          autofocus: false,
+                        ),
+                      ),
+
+
+                      SvgPicture.asset(
+                        'assets/icons/Calendar.svg',
+                        width: 20,
+                        height: 20,
+                      ),
+
+
+                    ],
+                  ),
+                ),
+                Padding(padding: EdgeInsetsDirectional.only(top: 5)),
+
+                Container(
+                  width: 330,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 17, vertical: 1),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFEEEEEE),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.50),
+                    ),
+                  ),
+
+                  child:
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+
+
+                      CustomRadio(
+                        value: 'Option 2',
+                        groupValue: selectedRadioTile,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRadioTile = value!;
+                          });
+                        },
+                      ),
+                      Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
+
+                      Text(
+                        'Годен в течение:',
+                        style: TextStyle(
+                          color: Color(0xFF8D8D8D),
+                          fontSize: 16,
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                ),
+                Padding(padding: EdgeInsetsDirectional.only(top: 16.0)),
+
+                Row(
+                  children: [
+                    Padding(padding: EdgeInsetsDirectional.only(start: 96.0)),
+                    Text(
+                      'Количество:',
+                      style: TextStyle(
+                        color: Color(0xFF8D8D8D),
+                        fontSize: 16,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
+                    Padding(padding: EdgeInsetsDirectional.only(start: 15.0)),
+
+                    Count(),
+                  ],
+                ),
+                Padding(padding: EdgeInsetsDirectional.only(top: 41.0)),
+
+
+                Container(
+
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //Navigator.pushNamed(context, '/listOfProducts');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Color(0xFF333333),
+                      fixedSize: Size(190, 44),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.5),
+                      ),
+                    ),
+
+                    child: Text(
+                      'Сохранить',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          );
+        });
+      },
     );
   }
 }
+
+
+
+
 
 class Count extends StatefulWidget {
   const Count({super.key});
@@ -682,5 +652,70 @@ class _CountState extends State<Count> {
     setState(() {
       _count += 1;
     });
+  }
+
+
+}
+
+
+
+
+class CustomRadio extends StatefulWidget {
+  String value;
+  String groupValue;
+  Color? color;
+  Color? selectColor;
+  void Function(String?)? onChanged;
+
+  CustomRadio({
+    Key? key,
+    required this.value,
+    required this.groupValue,
+    this.color = const Color(0xFFE2DFDF),
+    this.selectColor = const Color(0xFF54DD01),
+    this.onChanged,
+  }) : super(key: key);
+
+  @override
+  State<CustomRadio> createState() => _CustomRadioState();
+}
+
+class _CustomRadioState extends State<CustomRadio> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        bool selected = widget.value != widget.groupValue;
+        if (selected) {
+          widget.onChanged!(widget.value);
+        } else {
+          widget.onChanged!(null);
+        }
+      },
+      child: Container(
+        height: 16,
+        width: 16,
+        padding: EdgeInsets.zero,
+        decoration: ShapeDecoration(
+          color: Color(0xFFE2DFDF),
+          shape: const CircleBorder(
+            side: BorderSide(width: 0.50, color: Color(0xFFAFAFAF)),
+          ),
+        ),
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.zero,
+            height: 10,
+            width: 10,
+            decoration: BoxDecoration(
+              color: widget.value == widget.groupValue
+                  ? widget.selectColor
+                  : widget.color,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

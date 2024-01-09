@@ -374,13 +374,20 @@ class _FirstPageOfRegistrationState extends State<FirstPageOfRegistration> {
                     Container(
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_passwordsMatch && isValidLogin(_emailController.text)) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SecondPageOfRegistration(),
-                              ),
-                            );
+                          // Проверяем, что все три поля непустые
+                          if (_emailController.text.isNotEmpty &&
+                              _passwordController.text.isNotEmpty &&
+                              _confirmPasswordController.text.isNotEmpty) {
+
+                            // Дополнительные проверки
+                            if (_passwordsMatch && isValidLogin(_emailController.text)) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SecondPageOfRegistration(),
+                                ),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -613,7 +620,9 @@ class _SecondPageOfRegistrationState extends State<SecondPageOfRegistration> {
                     Container(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/listOfProducts');
+                          if (_nameController.text.isNotEmpty && _surnameController.text.isNotEmpty) {
+                            Navigator.pushNamed(context, '/listOfProducts');
+                          };
                         },
                         style: ElevatedButton.styleFrom(
                             elevation: 0.0,
