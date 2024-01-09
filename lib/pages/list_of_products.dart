@@ -225,17 +225,8 @@ class _listOfProducts extends State<listOfProducts> {
 
                         ),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(padding: EdgeInsetsDirectional.only(start: 6)),
-                            Icon(
-                              Icons.add_circle_outline_sharp,
-                              color: Colors.white,
-                              size: 20,
-                              opticalSize: 20.0,
-                            ),
-                            Padding(padding: EdgeInsetsDirectional.only(start: 8)),
-
                             Text(
                               'Добавить продукт',
                               style: TextStyle(
@@ -265,8 +256,8 @@ class _listOfProducts extends State<listOfProducts> {
   void _showModalBottomSheet() {
     showModalBottomSheet(
       context: context,
-      // backgroundColor: Colors.white,
-      // barrierColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      barrierColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(35),
