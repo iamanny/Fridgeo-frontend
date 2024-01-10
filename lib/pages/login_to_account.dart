@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'backgroundLR.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:untitled/server_responce/login_responce.dart';
 
 class loginToAccount extends StatefulWidget {
   const loginToAccount({super.key});
@@ -19,6 +19,8 @@ class _loginToAccountState extends State<loginToAccount> {
   final passwordFocusNode = FocusNode();
   bool _obscured = true;
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +78,7 @@ class _loginToAccountState extends State<loginToAccount> {
                     ),
 
                     child: TextFormField(
-
+                      controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -187,6 +189,12 @@ class _loginToAccountState extends State<loginToAccount> {
                   Container(
                     child: ElevatedButton(
                       onPressed: () {
+
+                        String username = _emailController.text;
+                        String password = passwordController.text;
+
+
+                        loginUser(username, password);
                         Navigator.pushNamed(context, '/listOfProducts');
                       },
                       style: ElevatedButton.styleFrom(
