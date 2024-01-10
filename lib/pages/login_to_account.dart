@@ -11,6 +11,13 @@ class loginToAccount extends StatefulWidget {
 }
 
 class _loginToAccountState extends State<loginToAccount> {
+  final textFieldFocusNode = FocusNode();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+  bool _obscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +98,73 @@ class _loginToAccountState extends State<loginToAccount> {
                   ),
 
                   Padding(padding: EdgeInsetsDirectional.only(top: 15.0)),
-                  PasswordField(text: 'Пароль'),
+              Container(
+                width: 343,
+                height: 56,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                clipBehavior: Clip.antiAlias,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFEEEEEE),
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.50),
+                  ),
+                ),
+
+                child:
+                new TextFormField(
+
+
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: _obscured,
+                  focusNode: textFieldFocusNode,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+
+                    floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
+                    hintText: 'Пароль',
+                    hintStyle: TextStyle(
+                      color: Color(0xFF8D8D8D),
+                      fontSize: 16,
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w500,
+                    ),
+                    border: InputBorder.none,
+                    suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
+
+                    suffixIcon: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: IconButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+
+
+                        onPressed: () {
+
+                          setState(() {
+                            _obscured = !_obscured;
+                            if (textFieldFocusNode.hasPrimaryFocus) return; // If focus is on text field, dont unfocus
+                            textFieldFocusNode.canRequestFocus = false;     // Prevents focus if tap on eye
+                          });
+                        },
+                        icon: _obscured
+                            ? SvgPicture.asset('assets/icons/Eye_open.svg')
+                            : SvgPicture.asset('assets/icons/Eye_closed.svg'),
+
+                        iconSize: 24,
+                        color: Color(0xFF8D8D8D),
+
+                        style: IconButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: EdgeInsetsDirectional.all(0.0),
+                        ),
+
+                      ),
+                    ),
+                  ),
+
+                ),
+              ),
 
                   Padding(padding: EdgeInsetsDirectional.only(top: 15.0)),
 
@@ -198,95 +271,7 @@ class _loginToAccountState extends State<loginToAccount> {
   }
 }
 
-class PasswordField extends StatefulWidget {
-  final String text;
-  const PasswordField({Key? key, required this.text}) : super(key: key);
 
-  @override
-  _PasswordFieldState createState() => _PasswordFieldState();
-}
-
-class _PasswordFieldState extends State<PasswordField> {
-  final textFieldFocusNode = FocusNode();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  final emailFocusNode = FocusNode();
-  final passwordFocusNode = FocusNode();
-  bool _obscured = true;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 343,
-      height: 56,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Color(0xFFEEEEEE),
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.50),
-        ),
-      ),
-
-      child:
-      new TextFormField(
-
-
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: _obscured,
-        focusNode: textFieldFocusNode,
-        controller: passwordController,
-        decoration: InputDecoration(
-
-          floatingLabelBehavior: FloatingLabelBehavior.never, //Hides label on focus or if filled
-          hintText: widget.text, // Используйте значение параметра text
-          hintStyle: TextStyle(
-            color: Color(0xFF8D8D8D),
-            fontSize: 16,
-            fontFamily: 'Raleway',
-            fontWeight: FontWeight.w500,
-          ),
-          border: InputBorder.none,
-          suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24),
-
-          suffixIcon: SizedBox(
-              width: 24,
-              height: 24,
-              child: IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-
-
-                onPressed: () {
-
-                  setState(() {
-                    _obscured = !_obscured;
-                    if (textFieldFocusNode.hasPrimaryFocus) return; // If focus is on text field, dont unfocus
-                    textFieldFocusNode.canRequestFocus = false;     // Prevents focus if tap on eye
-                  });
-                },
-                icon: _obscured
-                ? SvgPicture.asset('assets/icons/Eye_open.svg')
-                : SvgPicture.asset('assets/icons/Eye_closed.svg'),
-
-                  iconSize: 24,
-                  color: Color(0xFF8D8D8D),
-
-                style: IconButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsetsDirectional.all(0.0),
-              ),
-
-          ),
-          ),
-        ),
-
-      ),
-    );
-  }
-}
 
 
 
